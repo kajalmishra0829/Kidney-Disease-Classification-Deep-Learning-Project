@@ -1,6 +1,7 @@
 from cnnClassifier.config.configuration import ConfigurationManager
 from cnnClassifier.components.model_training import Training
 from cnnClassifier import logger
+from cnnClassifier.utils.common import copy_model_to_model_folder
 
 
 
@@ -19,6 +20,7 @@ class ModelTrainingPipeline:
         training.get_base_model()
         training.train_valid_generator()
         training.train()
+        copy_model_to_model_folder(source_path=training_config.trained_model_path)
 
 
 

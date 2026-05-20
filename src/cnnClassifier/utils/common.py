@@ -9,6 +9,7 @@ from box import ConfigBox
 from pathlib import Path
 from typing import Any
 import base64
+import shutil
 
 
 
@@ -137,3 +138,16 @@ def encodeImageIntoBase64(croppedImagePath):
         return base64.b64encode(f.read())
 
 
+def copy_model_to_model_folder(
+    source_path: Path,
+    destination_path: str = "model/model.h5"
+):
+    source = Path(source_path)
+    destination = Path(destination_path)
+
+    if not source.exists():
+        raise FileNotFoundError(f"Trained model not found at: {source}")
+
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, destination)
+    logger.info(f"Model copied: {source} --> {destination}")
