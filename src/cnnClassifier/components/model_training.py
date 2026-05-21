@@ -3,6 +3,7 @@ import urllib.request as request
 from zipfile import ZipFile
 import tensorflow as tf
 import time
+import json 
 from pathlib import Path
 from cnnClassifier.entity.config_entity import TrainingConfig
 
@@ -64,7 +65,7 @@ class Training:
     
     @staticmethod
     def save_model(path: Path, model: tf.keras.Model):
-        model.save(path)
+        model.save(path, save_format='h5')
 
 
 
@@ -73,13 +74,16 @@ class Training:
         self.steps_per_epoch = self.train_generator.samples // self.train_generator.batch_size
         self.validation_steps = self.valid_generator.samples // self.valid_generator.batch_size
 
-        self.model.fit(
+        history = self.model.fit(
             self.train_generator,
             epochs=self.config.params_epochs,
             steps_per_epoch=self.steps_per_epoch,
             validation_steps=self.validation_steps,
             validation_data=self.valid_generator
         )
+        with open("training_history.json", "w") as f:
+            json.dump(history.history, f)
+
 
         self.save_model(
             path=self.config.trained_model_path,

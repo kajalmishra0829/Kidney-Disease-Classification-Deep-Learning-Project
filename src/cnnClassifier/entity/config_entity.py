@@ -21,6 +21,7 @@ class PrepareBaseModelConfig:
     params_include_top: bool
     params_weights: str
     params_classes: int
+    params_base_model:str
 
 
 

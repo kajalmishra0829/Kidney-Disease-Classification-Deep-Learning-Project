@@ -5,7 +5,7 @@ stages:
       - src/cnnClassifier/pipeline/stage_01_data_ingestion.py
       - config/config.yaml
     outs:
-      - artifacts/data_ingestion/kidney-ct-scan-image
+      - artifacts/data_ingestion/CT-KIDNEY-DATASET-Normal-Tumor
 
   prepare_base_model:
     cmd: python src/cnnClassifier/pipeline/stage_02_prepare_base_model.py
@@ -13,6 +13,7 @@ stages:
       - src/cnnClassifier/pipeline/stage_02_prepare_base_model.py
       - config/config.yaml
     params:
+      - BASE_MODEL
       - IMAGE_SIZE
       - INCLUDE_TOP
       - CLASSES
@@ -26,9 +27,10 @@ stages:
     deps:
       - src/cnnClassifier/pipeline/stage_03_model_training.py
       - config/config.yaml
-      - artifacts/data_ingestion/kidney-ct-scan-image
+      - artifacts/data_ingestion/CT-KIDNEY-DATASET-Normal-Tumor
       - artifacts/prepare_base_model
     params:
+      - BASE_MODEL
       - IMAGE_SIZE
       - EPOCHS
       - BATCH_SIZE
@@ -41,9 +43,10 @@ stages:
     deps:
       - src/cnnClassifier/pipeline/stage_04_model_evaluation.py
       - config/config.yaml
-      - artifacts/data_ingestion/kidney-ct-scan-image
+      - artifacts/data_ingestion/CT-KIDNEY-DATASET-Normal-Tumor
       - artifacts/training/model.h5
     params:
+      - BASE_MODEL
       - IMAGE_SIZE
       - BATCH_SIZE
     metrics:

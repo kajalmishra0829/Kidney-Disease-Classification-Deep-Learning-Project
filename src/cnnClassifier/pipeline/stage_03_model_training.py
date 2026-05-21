@@ -20,7 +20,7 @@ class ModelTrainingPipeline:
         training.get_base_model()
         training.train_valid_generator()
         training.train()
-        copy_model_to_model_folder(source_path=training_config.trained_model_path)
+        copy_model_to_model_folder(source_path=training_config.trained_model_path, model_name=config.params.BASE_MODEL)
 
 
 

@@ -46,6 +46,7 @@ class ConfigurationManager:
             root_dir=Path(config.root_dir),
             base_model_path=Path(config.base_model_path),
             updated_base_model_path=Path(config.updated_base_model_path),
+            params_base_model=self.params.BASE_MODEL,
             params_image_size=self.params.IMAGE_SIZE,
             params_learning_rate=self.params.LEARNING_RATE,
             params_include_top=self.params.INCLUDE_TOP,
@@ -62,7 +63,7 @@ class ConfigurationManager:
         training = self.config.training
         prepare_base_model = self.config.prepare_base_model
         params = self.params
-        training_data = os.path.join(self.config.data_ingestion.unzip_dir, "kidney-ct-scan-image")
+        training_data = os.path.join(self.config.data_ingestion.unzip_dir, "CT-KIDNEY-DATASET-Normal-Tumor")
         create_directories([
             Path(training.root_dir)
         ])
@@ -85,7 +86,7 @@ class ConfigurationManager:
     def get_evaluation_config(self) -> EvaluationConfig:
         eval_config = EvaluationConfig(
             path_of_model="artifacts/training/model.h5",
-            training_data="artifacts/data_ingestion/kidney-ct-scan-image",
+            training_data="artifacts/data_ingestion/CT-KIDNEY-DATASET-Normal-Tumor",
             mlflow_uri="https://dagshub.com/kajalmishra0829/Kidney-Disease-Classification-Deep-Learning-Project.mlflow",
             all_params=self.params,
             params_image_size=self.params.IMAGE_SIZE,

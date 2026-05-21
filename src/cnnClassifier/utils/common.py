@@ -140,7 +140,8 @@ def encodeImageIntoBase64(croppedImagePath):
 
 def copy_model_to_model_folder(
     source_path: Path,
-    destination_path: str = "model/model.h5"
+    destination_path: str = "model/model.h5",
+    model_name: str = None
 ):
     source = Path(source_path)
     destination = Path(destination_path)
@@ -148,6 +149,13 @@ def copy_model_to_model_folder(
     if not source.exists():
         raise FileNotFoundError(f"Trained model not found at: {source}")
 
+    # save model/model.h5
     destination.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(source, destination)
     logger.info(f"Model copied: {source} --> {destination}")
+
+    # save named copy if model_name provided
+    if model_name:
+        named_destination = Path("model") / f"{model_name}.h5"
+        shutil.copy2(source, named_destination)
+        logger.info(f"Named model saved: {source} --> {named_destination}")

@@ -12,12 +12,24 @@ class PrepareBaseModel:
 
     
     def get_base_model(self):
-        self.model = tf.keras.applications.resnet50.ResNet50(
+        model_map = {
+            "ResNet50":tf.keras.applications.ResNet50,
+            "EfficientNetV2B0": tf.keras.applications.EfficientNetV2B0,
+            "DenseNet121": tf.keras.applications.DenseNet121,
+            "VGG16": tf.keras.applications.VGG16,
+            "InceptionV3": tf.keras.applications.InceptionV3,
+            "Xception": tf.keras.applications.Xception,
+            "MobileNetV2": tf.keras.applications.MobileNetV2,
+            "ConvNeXtTiny": tf.keras.applications.ConvNeXtTiny,
+        }
+        base_model_class = model_map.get(self.config.params_base_model, tf.keras.applications.ResNet50)
+
+        self.model = base_model_class(
             input_shape=self.config.params_image_size,
             weights=self.config.params_weights,
             include_top=self.config.params_include_top
         )
-
+        
         self.save_model(path=self.config.base_model_path, model=self.model)
 
     
@@ -67,5 +79,5 @@ class PrepareBaseModel:
         
     @staticmethod
     def save_model(path: Path, model: tf.keras.Model):
-        model.save(path)
+        model.save(path, save_format='h5')
 
